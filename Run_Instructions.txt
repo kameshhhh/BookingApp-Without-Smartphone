@@ -1,0 +1,62 @@
+# Complete Instructions to Run the BookingApp-Without-Smartphone Prototype
+
+## 1. Prerequisites
+- Install **Node.js** from [https://nodejs.org/](https://nodejs.org/).
+- Install **MySQL** (or use a compatible local server).
+
+## 2. Install Project Dependencies
+- Open PowerShell in the project directory (`C:\myprjt`).
+- Run:
+   ```powershell
+   npm install
+   ```
+
+## 3. Set Up the Database (Optional for Demo)
+- Open MySQL Workbench or CLI.
+- Run the SQL script in `setup_database.sql` to create the database and tables:
+   ```sql
+   SOURCE C:/myprjt/setup_database.sql;
+   ```
+- Edit the script if you want to customize table names or fields.
+
+## 4. Start Backend Servers
+Open **three PowerShell windows** (or run in background):
+
+- **Booking API Server** (port 3000):
+   ```powershell
+   node server_booking.js
+   ```
+- **Auth API Server** (port 3001):
+   ```powershell
+   node server_auth.js
+   ```
+- **Missed Call/SMS API Server** (port 4000):
+   ```powershell
+   node server_missed_call.js
+   ```
+
+> All servers must be running for full functionality.
+
+## 5. Open the Frontend
+- Double-click or open one of these files in your browser:
+   - `frontend.html` (Admin login portal)
+   - `booking.html` (Booking form)
+   - `missed_call_demo.html` (Missed call/SMS demo)
+   - `new.html` (Admin dashboard)
+
+## 6. Usage & Testing
+- **Login** as admin in `frontend.html` (default: admin/password123).
+- **Submit bookings** via `booking.html` or `new.html`.
+- **Simulate missed calls/SMS** via `missed_call_demo.html`.
+- **Check server terminals** for logs and responses.
+
+## 7. Notes
+- All API endpoints are simulated for demo purposes.
+- For real deployment, connect backend to a live MySQL server and integrate with SMS/missed call providers.
+- See `README.md` and `README.txt` for project details and future scope.
+
+---
+**Troubleshooting:**
+- If you see CORS errors, ensure all servers are running and accessible.
+- If ports are busy, change the `PORT` variable in server files.
+- For database errors, check your MySQL connection and credentials.
