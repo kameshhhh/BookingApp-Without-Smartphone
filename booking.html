@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Transport Booking Dashboard</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      body {
+        background-color: #f5f7fa;
+        color: #333;
+        line-height: 1.6;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 20px;
+        background: linear-gradient(135deg, #2c3e50, #1a2530);
+        color: white;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .logo i {
+        font-size: 24px;
+      }
+
+      .notification-badge {
+        background-color: #e74c3c;
+        color: white;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 12px;
+        position: absolute;
+        top: -5px;
+        right: -5px;
+      }
+
+      .notification-icon {
+        position: relative;
+        margin-right: 15px;
+        cursor: pointer;
+      }
+
+      .main-content {
+        display: grid;
+        grid-template-columns: 1fr 3fr;
+        gap: 20px;
+      }
+
+      .sidebar {
+        background: white;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+      }
+
+      .filters h2 {
+        margin-bottom: 15px;
+        color: #2c3e50;
+        font-size: 18px;
+      }
+
+      .filter-option {
+        margin-bottom: 15px;
+      }
+
+      .filter-option h3 {
+        font-size: 16px;
+        margin-bottom: 8px;
+        color: #34495e;
+      }
+
+      .checkbox-group {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .checkbox-group label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+      }
+
+      .content {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .card {
+        background: white;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+      }
+
+      .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+      }
+
+      .card-header h2 {
+        color: #2c3e50;
+        font-size: 20px;
+      }
+
+      .view-all {
+        color: #3498db;
+        text-decoration: none;
+        font-weight: 500;
+      }
+
+      .transport-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 20px;
+      }
+
+      .transport-card {
+        border: 1px solid #e0e0e0;
+        border-radius: 10px;
+        padding: 15px;
+        transition: transform 0.3s, box-shadow 0.3s;
+        cursor: pointer;
+      }
+
+      .transport-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .transport-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+
+      .transport-type {
+        font-weight: 600;
+        color: #2c3e50;
+      }
+
+      .online-status {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 14px;
+      }
+
+      .status-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        display: inline-block;
+      }
+
+      .online {
+        background-color: #2ecc71;
+      }
+
+      .offline {
+        background-color: #e74c3c;
+      }
+
+      .transport-details {
+        margin: 10px 0;
+      }
+
+      .detail {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 8px;
+        font-size: 14px;
+        color: #555;
+      }
+
+      .price {
+        font-weight: 600;
+        color: #2c3e50;
+        font-size: 18px;
+        margin: 10px 0;
+      }
+
+      .action-buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 15px;
+      }
+
+      .btn {
+        padding: 8px 15px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: 500;
+        transition: background-color 0.3s;
+      }
+
+      .btn-book {
+        background-color: #3498db;
+        color: white;
+      }
+
+      .btn-book:hover {
+        background-color: #2980b9;
+      }
+
+      .btn-call {
+        background-color: #f1f1f1;
+        color: #333;
+      }
+
+      .btn-call:hover {
+        background-color: #e0e0e0;
+      }
+
+      .missed-calls {
+        margin-top: 20px;
+      }
+
+      .call-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px;
+        border-bottom: 1px solid #eee;
+      }
+
+      .call-item:last-child {
+        border-bottom: none;
+      }
+
+      .call-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: #ffe6e6;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #e74c3c;
+      }
+
+      .call-info {
+        flex-grow: 1;
+      }
+
+      .call-time {
+        font-size: 12px;
+        color: #777;
+      }
+
+      .map-container {
+        height: 300px;
+        background-color: #e0e0e0;
+        border-radius: 10px;
+        overflow: hidden;
+        margin-top: 20px;
+        position: relative;
+      }
+
+      .map-placeholder {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(135deg, #74b9ff, #0984e3);
+        color: white;
+        font-weight: 500;
+      }
+
+      .current-location {
+        position: absolute;
+        bottom: 20px;
+        left: 20px;
+        background: white;
+        padding: 10px 15px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      @media (max-width: 900px) {
+        .main-content {
+          grid-template-columns: 1fr;
+        }
+        .transport-grid {
+          grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        }
+      }
+
+      @media (max-width: 600px) {
+        .transport-grid {
+          grid-template-columns: 1fr;
+        }
+        header {
+          flex-direction: column;
+          gap: 15px;
+          text-align: center;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <header>
+        <div class="logo">
+          <i class="fas fa-taxi"></i>
+          <h1>Transport Booking Dashboard</h1>
+        </div>
+        <div class="notification-icon">
+          <i class="fas fa-bell"></i>
+          <span class="notification-badge">3</span>
+        </div>
+      </header>
+
+      <div class="main-content">
+        <div class="sidebar">
+          <div class="filters">
+            <h2>Filters</h2>
+
+            <div class="filter-option">
+              <h3>Transport Type</h3>
+              <div class="checkbox-group">
+                <label>
+                  <input type="checkbox" checked />
+                  <span>Auto Rickshaw</span>
+                </label>
+                <label>
+                  <input type="checkbox" checked />
+                  <span>Bus</span>
+                </label>
+                <label>
+                  <input type="checkbox" checked />
+                  <span>Car</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="filter-option">
+              <h3>Status</h3>
+              <div class="checkbox-group">
+                <label>
+                  <input type="checkbox" checked />
+                  <span>Online</span>
+                </label>
+                <label>
+                  <input type="checkbox" />
+                  <span>Offline</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="filter-option">
+              <h3>Price Range</h3>
+              <div class="checkbox-group">
+                <label>
+                  <input type="radio" name="price" checked />
+                  <span>All</span>
+                </label>
+                <label>
+                  <input type="radio" name="price" />
+                  <span>Budget (₹0-₹200)</span>
+                </label>
+                <label>
+                  <input type="radio" name="price" />
+                  <span>Standard (₹200-₹500)</span>
+                </label>
+                <label>
+                  <input type="radio" name="price" />
+                  <span>Premium (₹500+)</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="missed-calls">
+            <h3>Recent Missed Calls</h3>
+            <div class="call-item">
+              <div class="call-icon">
+                <i class="fas fa-phone"></i>
+              </div>
+              <div class="call-info">
+                <div>Auto Driver Rajesh</div>
+                <div class="call-time">Today, 10:23 AM</div>
+              </div>
+            </div>
+            <div class="call-item">
+              <div class="call-icon">
+                <i class="fas fa-phone"></i>
+              </div>
+              <div class="call-info">
+                <div>City Bus Service</div>
+                <div class="call-time">Yesterday, 4:45 PM</div>
+              </div>
+            </div>
+            <div class="call-item">
+              <div class="call-icon">
+                <i class="fas fa-phone"></i>
+              </div>
+              <div class="call-info">
+                <div>Car Rental Service</div>
+                <div class="call-time">Yesterday, 11:30 AM</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="content">
+          <div class="card">
+            <div class="card-header">
+              <h2>Available Transports</h2>
+              <a href="#" class="view-all">View All</a>
+            </div>
+
+            <div class="transport-grid">
+              <div class="transport-card">
+                <div class="transport-header">
+                  <div class="transport-type">Auto Rickshaw</div>
+                  <div class="online-status">
+                    <span class="status-dot online"></span>
+                    <span>Online</span>
+                  </div>
+                </div>
+                <div class="transport-details">
+                  <div class="detail">
+                    <i class="fas fa-user"></i>
+                    <span>Driver: Rajesh</span>
+                  </div>
+                  <div class="detail">
+                    <i class="fas fa-star"></i>
+                    <span>4.2 (120 ratings)</span>
+                  </div>
+                  <div class="detail">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>1.2 km away</span>
+                  </div>
+                </div>
+                <div class="price">₹150 estimated</div>
+                <div class="action-buttons">
+                  <button class="btn btn-book">Book Now</button>
+                  <button class="btn btn-call">Call</button>
+                </div>
+              </div>
+
+              <div class="transport-card">
+                <div class="transport-header">
+                  <div class="transport-type">Bus</div>
+                  <div class="online-status">
+                    <span class="status-dot online"></span>
+                    <span>Online</span>
+                  </div>
+                </div>
+                <div class="transport-details">
+                  <div class="detail">
+                    <i class="fas fa-bus"></i>
+                    <span>Route: Downtown Express</span>
+                  </div>
+                  <div class="detail">
+                    <i class="fas fa-clock"></i>
+                    <span>Arrives in 15 min</span>
+                  </div>
+                  <div class="detail">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>0.8 km away</span>
+                  </div>
+                </div>
+                <div class="price">₹45 per seat</div>
+                <div class="action-buttons">
+                  <button class="btn btn-book">Book Now</button>
+                  <button class="btn btn-call">Call</button>
+                </div>
+              </div>
+
+              <div class="transport-card">
+                <div class="transport-header">
+                  <div class="transport-type">Car</div>
+                  <div class="online-status">
+                    <span class="status-dot online"></span>
+                    <span>Online</span>
+                  </div>
+                </div>
+                <div class="transport-details">
+                  <div class="detail">
+                    <i class="fas fa-user"></i>
+                    <span>Driver: Amit</span>
+                  </div>
+                  <div class="detail">
+                    <i class="fas fa-star"></i>
+                    <span>4.8 (89 ratings)</span>
+                  </div>
+                  <div class="detail">
+                    <i class="fas fa-car"></i>
+                    <span>Toyota Innova</span>
+                  </div>
+                </div>
+                <div class="price">₹350 estimated</div>
+                <div class="action-buttons">
+                  <button class="btn btn-book">Book Now</button>
+                  <button class="btn btn-call">Call</button>
+                </div>
+              </div>
+
+              <div class="transport-card">
+                <div class="transport-header">
+                  <div class="transport-type">Auto Rickshaw</div>
+                  <div class="online-status">
+                    <span class="status-dot offline"></span>
+                    <span>Offline</span>
+                  </div>
+                </div>
+                <div class="transport-details">
+                  <div class="detail">
+                    <i class="fas fa-user"></i>
+                    <span>Driver: Suresh</span>
+                  </div>
+                  <div class="detail">
+                    <i class="fas fa-star"></i>
+                    <span>4.0 (95 ratings)</span>
+                  </div>
+                  <div class="detail">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>2.5 km away</span>
+                  </div>
+                </div>
+                <div class="price">₹180 estimated</div>
+                <div class="action-buttons">
+                  <button class="btn btn-book" disabled>Book Now</button>
+                  <button class="btn btn-call">Call</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h2>Live Location Tracking</h2>
+            </div>
+
+            <div class="map-container">
+              <div class="map-placeholder">
+                <i
+                  class="fas fa-map-marked-alt"
+                  style="font-size: 24px; margin-right: 10px"
+                ></i>
+                Live Map View
+              </div>
+              <div class="current-location">
+                <i class="fas fa-location-arrow"></i>
+                <span>Your location: Downtown Center</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Simple JavaScript for interactive elements
+      document.addEventListener("DOMContentLoaded", function () {
+        const transportCards = document.querySelectorAll(".transport-card");
+
+        transportCards.forEach((card) => {
+          card.addEventListener("click", function (e) {
+            if (!e.target.classList.contains("btn")) {
+              this.querySelector(".btn-book").click();
+            }
+          });
+        });
+
+        const filterCheckboxes = document.querySelectorAll(
+          'input[type="checkbox"]'
+        );
+        filterCheckboxes.forEach((checkbox) => {
+          checkbox.addEventListener("change", filterTransport);
+        });
+
+        const filterRadios = document.querySelectorAll('input[type="radio"]');
+        filterRadios.forEach((radio) => {
+          radio.addEventListener("change", filterTransport);
+        });
+
+        function filterTransport() {
+          // This is a simplified version - in a real app, you would filter the transport options
+          console.log("Filters updated");
+        }
+      });
+    </script>
+    <script src="booking_submit.js"></script>
+    <script src="booking_dynamic.js"></script>
+    <script src="modal_helper.js"></script>
+    <script src="booking_submit_modal.js"></script>
+    <script src="booking_dynamic_modal.js"></script>
+  </body>
+</html>

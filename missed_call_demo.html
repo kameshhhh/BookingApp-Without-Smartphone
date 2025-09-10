@@ -1,0 +1,110 @@
+// missed_call_demo.html // Standalone demo page for missed call/SMS API // Does
+NOT modify any original project files
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Missed Call/SMS API Demo</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background: #f5f7fa;
+        padding: 40px;
+      }
+
+      .container {
+        max-width: 400px;
+        margin: auto;
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px #ccc;
+        padding: 24px;
+      }
+
+      label {
+        display: block;
+        margin-top: 16px;
+      }
+
+      input,
+      textarea {
+        width: 100%;
+        padding: 8px;
+        margin-top: 4px;
+        border-radius: 4px;
+        border: 1px solid #ccc;
+      }
+
+      button {
+        margin-top: 20px;
+        padding: 10px 20px;
+        background: #1e3c72;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      .result {
+        margin-top: 20px;
+        padding: 10px;
+        border-radius: 4px;
+        background: #eaf6ea;
+        color: #2a5298;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <h2>Missed Call/SMS API Demo</h2>
+      <form id="missedCallForm">
+        <label>Phone Number</label>
+        <input type="text" id="phone" required />
+        <label>Message</label>
+        <textarea id="message" rows="2"></textarea>
+        <label>Type</label>
+        <select id="type">
+          <option value="missed_call">Missed Call</option>
+          <option value="sms">SMS</option>
+        </select>
+        <button type="submit">Send</button>
+      </form>
+      <div class="result" id="result" style="display: none"></div>
+    </div>
+    <script>
+      document
+        .getElementById("missedCallForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+          const phone = document.getElementById("phone").value;
+          const message = document.getElementById("message").value;
+          const type = document.getElementById("type").value;
+          fetch("http://localhost:4000/api/missed-call", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              phone,
+              message,
+              type,
+            }),
+          })
+            .then((res) => res.json())
+            .then((data) => {
+              document.getElementById("result").style.display = "block";
+              document.getElementById("result").textContent = data.success
+                ? "Received: " + JSON.stringify(data.received)
+                : "Error!";
+            })
+            .catch((err) => {
+              document.getElementById("result").style.display = "block";
+              document.getElementById("result").textContent =
+                "Network error: " + err;
+            });
+        });
+    </script>
+  </body>
+</html>

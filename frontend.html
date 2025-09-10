@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Portal - Missed Call Order System</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      body {
+        background: linear-gradient(135deg, #1e3c72, #2a5298);
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #333;
+        padding: 20px;
+      }
+
+      .container {
+        display: flex;
+        width: 1000px;
+        max-width: 100%;
+        height: 550px;
+        background: white;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+      }
+
+      .left-panel {
+        flex: 1;
+        background: linear-gradient(135deg, #1e3c72, #2a5298);
+        color: white;
+        padding: 40px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .left-panel::before {
+        content: "";
+        position: absolute;
+        top: -70px;
+        right: -70px;
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      .left-panel::after {
+        content: "";
+        position: absolute;
+        bottom: -80px;
+        left: -80px;
+        width: 250px;
+        height: 250px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      .logo {
+        font-size: 32px;
+        font-weight: 700;
+        margin-bottom: 20px;
+        position: relative;
+        z-index: 1;
+        display: flex;
+        align-items: center;
+      }
+
+      .logo-icon {
+        margin-right: 10px;
+        background: white;
+        color: #1e3c72;
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .tagline {
+        font-size: 20px;
+        margin-bottom: 10px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .subtagline {
+        font-size: 16px;
+        opacity: 0.9;
+        margin-bottom: 30px;
+        position: relative;
+        z-index: 1;
+        line-height: 1.5;
+      }
+
+      .features {
+        margin-top: 20px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .feature {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+      }
+
+      .feature-icon {
+        background: rgba(255, 255, 255, 0.2);
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 10px;
+      }
+
+      .circle {
+        width: 250px;
+        height: 250px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.1);
+        position: absolute;
+        bottom: -50px;
+        right: -50px;
+        z-index: 0;
+      }
+
+      .right-panel {
+        flex: 1;
+        padding: 40px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        background: #f9f9f9;
+      }
+
+      .welcome {
+        font-size: 24px;
+        font-weight: 600;
+        margin-bottom: 30px;
+        text-align: center;
+        color: #1e3c72;
+      }
+
+      .admin-portal {
+        background: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 14px;
+        color: #555;
+        font-weight: 500;
+      }
+
+      .form-group input {
+        width: 100%;
+        padding: 14px 15px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        font-size: 16px;
+        transition: border 0.3s;
+      }
+
+      .form-group input:focus {
+        border-color: #1e3c72;
+        outline: none;
+        box-shadow: 0 0 0 2px rgba(30, 60, 114, 0.2);
+      }
+
+      .login-btn {
+        width: 100%;
+        padding: 14px;
+        background: #1e3c72;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background 0.3s;
+        font-weight: 600;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        margin-top: 10px;
+      }
+
+      .login-btn:hover {
+        background: #2a5298;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+
+      .support {
+        text-align: center;
+        margin-top: 20px;
+        font-size: 14px;
+        color: #777;
+      }
+
+      .support a {
+        color: #1e3c72;
+        text-decoration: none;
+        font-weight: 500;
+      }
+
+      .support a:hover {
+        text-decoration: underline;
+      }
+
+      .security-note {
+        text-align: center;
+        margin-top: 20px;
+        font-size: 12px;
+        color: #999;
+      }
+
+      @media (max-width: 900px) {
+        .container {
+          flex-direction: column;
+          height: auto;
+        }
+        .left-panel {
+          padding: 30px;
+        }
+      }
+
+      .language-selector {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+      }
+
+      .language-selector select {
+        padding: 8px 12px;
+        border-radius: 4px;
+        border: 1px solid #ddd;
+        background: white;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="language-selector">
+      <select>
+        <option>English</option>
+        <option>Hindi</option>
+        <option>Marathi</option>
+        <option>Tamil</option>
+        <option>Telugu</option>
+      </select>
+    </div>
+
+    <div class="container">
+      <div class="left-panel">
+        <div class="logo">
+          <div class="logo-icon">
+            <i class="fas fa-phone"></i>
+          </div>
+          CallOrder Admin
+        </div>
+        <div class="tagline">Missed Call Order System</div>
+        <div class="subtagline">
+          Manage orders received through missed calls and SMS messages
+        </div>
+
+        <div class="features">
+          <div class="feature">
+            <div class="feature-icon">
+              <i class="fas fa-mobile-alt"></i>
+            </div>
+            <div>Receive orders via missed calls</div>
+          </div>
+          <div class="feature">
+            <div class="feature-icon">
+              <i class="fas fa-sms"></i>
+            </div>
+            <div>Process SMS orders</div>
+          </div>
+          <div class="feature">
+            <div class="feature-icon">
+              <i class="fas fa-chart-line"></i>
+            </div>
+            <div>Track order analytics</div>
+          </div>
+          <div class="feature">
+            <div class="feature-icon">
+              <i class="fas fa-truck"></i>
+            </div>
+            <div>Manage delivery logistics</div>
+          </div>
+        </div>
+
+        <div class="circle"></div>
+      </div>
+
+      <div class="right-panel">
+        <div class="admin-portal">
+          <h2 class="welcome">Admin Login Portal</h2>
+
+          <form>
+            <div class="form-group">
+              <label for="username">Admin ID</label>
+              <input
+                type="text"
+                id="username"
+                placeholder="Enter your admin ID"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input
+                type="password"
+                id="password"
+                placeholder="Enter your password"
+              />
+            </div>
+
+            <button type="submit" class="login-btn">Login to Dashboard</button>
+          </form>
+
+          <div class="support">
+            <a href="#"
+              ><i class="fas fa-question-circle"></i> Forgot password?</a
+            >
+            |
+            <a href="#"><i class="fas fa-headset"></i> Support</a>
+          </div>
+
+          <div class="security-note">
+            <i class="fas fa-shield-alt"></i> Secure login for authorized
+            personnel only
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      document.querySelector("form").addEventListener("submit", function (e) {
+        e.preventDefault();
+        const username = document.getElementById("username").value;
+        const password = document.getElementById("password").value;
+
+        if (username && password) {
+          // Redirect to new.html after successful login
+          window.location.href = "new.html";
+        } else {
+          alert("Please enter both Admin ID and password");
+        }
+      });
+    </script>
+    <script src="frontend_submit.js"></script>
+  </body>
+</html>

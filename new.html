@@ -1,0 +1,1190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard - Missed Call Order System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+        }
+        
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+        /* Sidebar Styles */
+        
+        .sidebar {
+            width: 250px;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .logo {
+            padding: 0 20px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo-icon {
+            background: white;
+            color: #1e3c72;
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+        }
+        
+        .logo-text {
+            font-size: 20px;
+            font-weight: 700;
+        }
+        
+        .nav-item {
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .nav-item:hover,
+        .nav-item.active {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .nav-icon {
+            width: 24px;
+            margin-right: 10px;
+        }
+        /* Main Content Styles */
+        
+        .main-content {
+            flex: 1;
+            padding: 20px;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            background: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .page-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #1e3c72;
+        }
+        
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .booking-btn {
+            background: #1e3c72;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background 0.3s;
+        }
+        
+        .booking-btn:hover {
+            background: #2a5298;
+        }
+        
+        .orders-btn {
+            background: #4caf50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background 0.3s;
+        }
+        
+        .orders-btn:hover {
+            background: #388e3c;
+        }
+        
+        .admin-info {
+            display: flex;
+            align-items: center;
+        }
+        
+        .admin-phone {
+            background: #f0f5ff;
+            padding: 8px 15px;
+            border-radius: 20px;
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .phone-icon {
+            color: #1e3c72;
+            margin-right: 5px;
+        }
+        
+        .admin-profile {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #1e3c72;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        /* Dashboard Cards */
+        
+        .dashboard-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .card-title {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        
+        .card-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1e3c72;
+        }
+        
+        .card-trend {
+            font-size: 14px;
+            color: #4caf50;
+            margin-top: 5px;
+        }
+        
+        .card-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #f0f5ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #1e3c72;
+            font-size: 20px;
+            float: right;
+        }
+        /* Tabs */
+        
+        .tabs {
+            display: flex;
+            background: white;
+            border-radius: 8px 8px 0 0;
+            overflow: hidden;
+            margin-bottom: 0;
+        }
+        
+        .tab {
+            padding: 15px 20px;
+            cursor: pointer;
+            transition: background 0.3s;
+            text-align: center;
+            flex: 1;
+        }
+        
+        .tab.active {
+            background: #1e3c72;
+            color: white;
+        }
+        /* Orders Panel */
+        
+        .orders-panel {
+            background: white;
+            border-radius: 0 0 8px 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+            display: block;
+        }
+        
+        .messages-panel {
+            display: none;
+        }
+        
+        .analytics-panel {
+            display: none;
+        }
+        
+        .orders-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1e3c72;
+        }
+        
+        .filter-options {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .filter-btn {
+            padding: 8px 15px;
+            background: #f0f5ff;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        
+        .filter-btn.active {
+            background: #1e3c72;
+            color: white;
+        }
+        /* Orders Table */
+        
+        .orders-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .orders-table th {
+            text-align: left;
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+            color: #666;
+            font-weight: 600;
+        }
+        
+        .orders-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .order-row:hover {
+            background: #f9fafb;
+        }
+        
+        .customer {
+            display: flex;
+            align-items: center;
+        }
+        
+        .customer-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #f0f5ff;
+            color: #1e3c72;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            font-size: 12px;
+        }
+        
+        .status {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .status-new {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+        
+        .status-processing {
+            background: #fff8e1;
+            color: #f57c00;
+        }
+        
+        .status-completed {
+            background: #e8f5e9;
+            color: #388e3c;
+        }
+        
+        .action-btn {
+            padding: 6px 12px;
+            background: #f0f5ff;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            border: none;
+            color: #1e3c72;
+            margin-right: 5px;
+        }
+        
+        .action-btn.call {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+        
+        .action-btn.complete {
+            background: #e8f5e9;
+            color: #388e3c;
+        }
+        /* Messages Section */
+        
+        .message {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            cursor: pointer;
+        }
+        
+        .message:last-child {
+            border-bottom: none;
+        }
+        
+        .message.unread {
+            background: #f9fafb;
+        }
+        
+        .message-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #f0f5ff;
+            color: #1e3c72;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+        
+        .message-content {
+            flex: 1;
+        }
+        
+        .message-sender {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .message-text {
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .message-time {
+            font-size: 12px;
+            color: #999;
+        }
+        /* Modal Styles */
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 8px;
+            width: 400px;
+            max-width: 90%;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .modal-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1e3c72;
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+        }
+        
+        .modal-body {
+            margin-bottom: 20px;
+        }
+        
+        .modal-field {
+            margin-bottom: 15px;
+        }
+        
+        .modal-field label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        .modal-field input,
+        .modal-field select,
+        .modal-field textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        
+        .btn-primary {
+            background: #1e3c72;
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: #f0f5ff;
+            color: #1e3c72;
+        }
+        /* Simple Booking Button */
+        
+        .simple-booking-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            z-index: 100;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .simple-booking-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+        /* Responsive Styles */
+        
+        @media (max-width: 992px) {
+            .sidebar {
+                width: 70px;
+            }
+            .logo-text,
+            .nav-text {
+                display: none;
+            }
+            .logo {
+                justify-content: center;
+            }
+            .nav-item {
+                justify-content: center;
+            }
+            .nav-icon {
+                margin-right: 0;
+            }
+            .dashboard-cards {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .header-actions {
+                margin-top: 15px;
+                width: 100%;
+                justify-content: space-between;
+            }
+            .dashboard-cards {
+                grid-template-columns: 1fr;
+            }
+            .orders-table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Simple Booking Button -->
+    <div class="simple-booking-btn" id="simpleBookingBtn">
+        <i class="fas fa-plus"></i>
+    </div>
+
+    <!-- Call Modal -->
+    <div class="modal" id="callModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Call Customer</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-field">
+                    <label>Customer Name</label>
+                    <input type="text" id="customerName" readonly />
+                </div>
+                <div class="modal-field">
+                    <label>Phone Number</label>
+                    <input type="text" id="customerPhone" readonly />
+                </div>
+                <div class="modal-field">
+                    <label>Call Purpose</label>
+                    <select id="callPurpose">
+              <option>Confirm Order</option>
+              <option>Clarify Details</option>
+              <option>Follow Up</option>
+              <option>Other</option>
+            </select>
+                </div>
+                <div class="modal-field">
+                    <label>Notes</label>
+                    <textarea id="callNotes" rows="3"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancelCall">Cancel</button>
+                <button class="btn btn-primary" id="startCall">Start Call</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Order Details Modal -->
+    <div class="modal" id="orderModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Order Details</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-field">
+                    <label>Order ID</label>
+                    <input type="text" id="orderId" readonly />
+                </div>
+                <div class="modal-field">
+                    <label>Customer Name</label>
+                    <input type="text" id="orderCustomer" readonly />
+                </div>
+                <div class="modal-field">
+                    <label>Products</label>
+                    <textarea id="orderProducts" rows="3" readonly></textarea>
+                </div>
+                <div class="modal-field">
+                    <label>Delivery Address</label>
+                    <textarea id="orderAddress" rows="2" readonly></textarea>
+                </div>
+                <div class="modal-field">
+                    <label>Status</label>
+                    <select id="orderStatus">
+              <option>New</option>
+              <option>Processing</option>
+              <option>Completed</option>
+              <option>Cancelled</option>
+            </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="closeOrder">Close</button>
+                <button class="btn btn-primary" id="saveOrder">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Booking Modal -->
+    <div class="modal" id="bookingModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Create New Booking</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <!-- Content removed as requested -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancelBooking">Cancel</button>
+                <button class="btn btn-primary" id="confirmBooking">
+            <a href="booking.html">Create Booking</a>
+          
+          </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Orders Modal -->
+    <div class="modal" id="ordersModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">All Orders</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-field">
+                    <label>Filter Orders</label>
+                    <select id="ordersFilter">
+              <option>All Orders</option>
+              <option>Pending Orders</option>
+              <option>Completed Orders</option>
+              <option>Cancelled Orders</option>
+            </select>
+                </div>
+                <div class="modal-field">
+                    <label>Date Range</label>
+                    <div style="display: flex; gap: 10px">
+                        <input type="date" id="startDate" />
+                        <input type="date" id="endDate" />
+                    </div>
+                </div>
+                <div class="modal-field">
+                    <label>Search Order</label>
+                    <input type="text" id="orderSearch" placeholder="Enter order ID or customer name" />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="closeOrders">Close</button>
+                <button class="btn btn-primary" id="viewOrders">View Orders</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-phone"></i>
+                </div>
+                <div class="logo-text">CallOrder</div>
+            </div>
+
+            <div class="nav-item active" data-panel="dashboard">
+                <div class="nav-icon"><i class="fas fa-home"></i></div>
+                <div class="nav-text">Dashboard</div>
+            </div>
+
+            <div class="nav-item" data-panel="orders">
+                <div class="nav-icon"><i class="fas fa-phone"></i></div>
+                <div class="nav-text">Missed Calls</div>
+            </div>
+
+            <div class="nav-item" data-panel="messages">
+                <div class="nav-icon"><i class="fas fa-sms"></i></div>
+                <div class="nav-text">Messages</div>
+            </div>
+
+            <div class="nav-item" data-panel="analytics">
+                <div class="nav-icon"><i class="fas fa-chart-bar"></i></div>
+                <div class="nav-text">Analytics</div>
+            </div>
+
+            <div class="nav-item">
+                <div class="nav-icon"><i class="fas fa-cog"></i></div>
+                <div class="nav-text">Settings</div>
+            </div>
+
+            <div class="nav-item" id="logoutBtn">
+                <div class="nav-icon"><i class="fas fa-sign-out-alt"></i></div>
+                <div class="nav-text">Logout</div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Header -->
+            <div class="header">
+                <div class="page-title">Admin Dashboard</div>
+                <div class="header-actions">
+                    <button class="orders-btn" id="ordersBtn">
+              <i class="fas fa-list"></i> Orders
+            </button>
+                    <button class="booking-btn" id="newBookingBtn">
+              <i class="fas fa-plus"></i> New Booking
+            </button>
+                    <div class="admin-info">
+                        <div class="admin-phone">
+                            <i class="fas fa-phone phone-icon"></i>
+                            <span>+91 98765 43210</span>
+                        </div>
+                        <div class="admin-profile">A</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dashboard Cards -->
+            <div class="dashboard-cards">
+                <div class="card">
+                    <div class="card-title">Today's Missed Calls</div>
+                    <div class="card-value">42</div>
+                    <div class="card-trend">
+                        <i class="fas fa-arrow-up"></i> 12% from yesterday
+                    </div>
+                    <div class="card-icon"><i class="fas fa-phone"></i></div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">New Messages</div>
+                    <div class="card-value">28</div>
+                    <div class="card-trend">
+                        <i class="fas fa-arrow-up"></i> 8% from yesterday
+                    </div>
+                    <div class="card-icon"><i class="fas fa-sms"></i></div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">Orders Today</div>
+                    <div class="card-value">19</div>
+                    <div class="card-trend">
+                        <i class="fas fa-arrow-up"></i> 5% from yesterday
+                    </div>
+                    <div class="card-icon"><i class="fas fa-shopping-cart"></i></div>
+                </div>
+            </div>
+
+            <!-- Tabs -->
+            <div class="tabs">
+                <div class="tab active" data-panel="orders">Missed Calls</div>
+                <div class="tab" data-panel="messages">Messages</div>
+                <div class="tab" data-panel="analytics">Analytics</div>
+            </div>
+
+            <!-- Orders Panel -->
+            <div class="orders-panel" id="ordersPanel">
+                <div class="orders-header">
+                    <div class="section-title">Recent Missed Calls</div>
+                    <div class="filter-options">
+                        <div class="filter-btn active" data-filter="today">Today</div>
+                        <div class="filter-btn" data-filter="week">This Week</div>
+                        <div class="filter-btn" data-filter="month">This Month</div>
+                    </div>
+                </div>
+
+                <table class="orders-table">
+                    <thead>
+                        <tr>
+                            <th>Customer</th>
+                            <th>Phone Number</th>
+                            <th>Time</th>
+                            <th>Call Duration</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="order-row">
+                            <td>
+                                <div class="customer">
+                                    <div class="customer-avatar">R</div>
+                                    <div>Rajesh Kumar</div>
+                                </div>
+                            </td>
+                            <td>+91 98765 43210</td>
+                            <td>10:23 AM</td>
+                            <td>5s</td>
+                            <td>
+                                <div class="status status-new">New</div>
+                            </td>
+                            <td>
+                                <button class="action-btn call" data-customer="Rajesh Kumar" data-phone="+91 98765 43210">
+                    Call Back
+                  </button>
+                                <button class="action-btn complete" data-order="ORD-1001">
+                    Complete
+                  </button>
+                            </td>
+                        </tr>
+
+                        <tr class="order-row">
+                            <td>
+                                <div class="customer">
+                                    <div class="customer-avatar">P</div>
+                                    <div>Priya Singh</div>
+                                </div>
+                            </td>
+                            <td>+91 97654 32109</td>
+                            <td>10:15 AM</td>
+                            <td>8s</td>
+                            <td>
+                                <div class="status status-processing">Processing</div>
+                            </td>
+                            <td>
+                                <button class="action-btn call" data-customer="Priya Singh" data-phone="+91 97654 32109">
+                    Call Back
+                  </button>
+                                <button class="action-btn complete" data-order="ORD-1002">
+                    Complete
+                  </button>
+                            </td>
+                        </tr>
+
+                        <tr class="order-row">
+                            <td>
+                                <div class="customer">
+                                    <div class="customer-avatar">A</div>
+                                    <div>Amit Patel</div>
+                                </div>
+                            </td>
+                            <td>+91 96543 21098</td>
+                            <td>09:58 AM</td>
+                            <td>3s</td>
+                            <td>
+                                <div class="status status-completed">Completed</div>
+                            </td>
+                            <td>
+                                <button class="action-btn" data-order="ORD-1003">
+                    View Details
+                  </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Messages Panel -->
+            <div class="messages-panel" id="messagesPanel">
+                <div class="orders-header">
+                    <div class="section-title">Recent Messages</div>
+                    <div class="filter-options">
+                        <div class="filter-btn active" data-filter="unread">Unread</div>
+                        <div class="filter-btn" data-filter="all">All</div>
+                    </div>
+                </div>
+
+                <div class="message unread">
+                    <div class="message-avatar">R</div>
+                    <div class="message-content">
+                        <div class="message-sender">Ravi Verma</div>
+                        <div class="message-text">
+                            Hello, I would like to place an order for Riksha.
+                        </div>
+                        <div class="message-time">10:45 AM • +91 98765 43210</div>
+                    </div>
+                </div>
+
+                <div class="message">
+                    <div class="message-avatar">N</div>
+                    <div class="message-content">
+                        <div class="message-sender">Neha Gupta</div>
+                        <div class="message-text">
+                            1(Chennai ,Koyambedu) to (Chennai ,Adyar) for 2 people.
+                        </div>
+                        <div class="message-time">10:30 AM • +91 97654 32109</div>
+                    </div>
+                </div>
+
+                <div class="message unread">
+                    <div class="message-avatar">A</div>
+                    <div class="message-content">
+                        <div class="message-sender">Anil Desai</div>
+                        <div class="message-text">
+                            Need to change my delivery address for today's order.
+                        </div>
+                        <div class="message-time">09:55 AM • +91 96543 21098</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Analytics Panel -->
+            <div class="analytics-panel" id="analyticsPanel">
+                <div class="orders-header">
+                    <div class="section-title">Order Analytics</div>
+                    <div class="filter-options">
+                        <div class="filter-btn active" data-filter="day">Daily</div>
+                        <div class="filter-btn" data-filter="week">Weekly</div>
+                        <div class="filter-btn" data-filter="month">Monthly</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">Orders Overview</div>
+                    <div style="
+                height: 300px;
+                background: #f9fafb;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin-top: 20px;
+                border-radius: 8px;
+              ">
+                        <p>Analytics chart would be displayed here</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simple booking button functionality
+        document
+            .getElementById("simpleBookingBtn")
+            .addEventListener("click", function() {
+                alert("Simple booking functionality would be implemented here");
+                // In a real application, this would open a booking form or modal
+            });
+
+        // Tab switching functionality
+        document.querySelectorAll(".tab").forEach((tab) => {
+            tab.addEventListener("click", () => {
+                document
+                    .querySelectorAll(".tab")
+                    .forEach((t) => t.classList.remove("active"));
+                tab.classList.add("active");
+
+                const panelId = tab.getAttribute("data-panel") + "Panel";
+                document.querySelectorAll('[class$="-panel"]').forEach((panel) => {
+                    panel.style.display = "none";
+                });
+                document.getElementById(panelId).style.display = "block";
+            });
+        });
+
+        // Navigation switching functionality
+        document.querySelectorAll(".nav-item").forEach((navItem) => {
+            navItem.addEventListener("click", () => {
+                if (navItem.id === "logoutBtn") {
+                    if (confirm("Are you sure you want to logout?")) {
+                        alert("Logging out...");
+                        // In a real app, this would redirect to login page
+                    }
+                    return;
+                }
+
+                document
+                    .querySelectorAll(".nav-item")
+                    .forEach((item) => item.classList.remove("active"));
+                navItem.classList.add("active");
+
+                const panelId = navItem.getAttribute("data-panel") + "Panel";
+                if (panelId && document.getElementById(panelId)) {
+                    document.querySelectorAll('[class$="-panel"]').forEach((panel) => {
+                        panel.style.display = "none";
+                    });
+                    document.getElementById(panelId).style.display = "block";
+
+                    // Also activate the corresponding tab
+                    document.querySelectorAll(".tab").forEach((tab) => {
+                        tab.classList.remove("active");
+                        if (
+                            tab.getAttribute("data-panel") ===
+                            navItem.getAttribute("data-panel")
+                        ) {
+                            tab.classList.add("active");
+                        }
+                    });
+                }
+            });
+        });
+
+        // Filter buttons functionality
+        document.querySelectorAll(".filter-btn").forEach((btn) => {
+            btn.addEventListener("click", () => {
+                const parent =
+                    btn.closest(".orders-header") || btn.closest(".analytics-panel");
+                parent
+                    .querySelectorAll(".filter-btn")
+                    .forEach((b) => b.classList.remove("active"));
+                btn.classList.add("active");
+
+                // In a real application, this would filter the content
+                alert("Applying filter: " + btn.textContent);
+            });
+        });
+
+        // Call button functionality
+        document.querySelectorAll(".action-btn.call").forEach((btn) => {
+            btn.addEventListener("click", () => {
+                const customer = btn.getAttribute("data-customer");
+                const phone = btn.getAttribute("data-phone");
+
+                document.getElementById("customerName").value = customer;
+                document.getElementById("customerPhone").value = phone;
+                document.getElementById("callModal").style.display = "flex";
+            });
+        });
+
+        // Complete order button functionality
+        document.querySelectorAll(".action-btn.complete").forEach((btn) => {
+            btn.addEventListener("click", () => {
+                const orderId = btn.getAttribute("data-order");
+                if (confirm(`Mark order ${orderId} as completed?`)) {
+                    alert(`Order ${orderId} marked as completed`);
+                    // In a real app, this would update the order status in the database
+                    btn.closest("tr").querySelector(".status").className =
+                        "status status-completed";
+                    btn.closest("tr").querySelector(".status").textContent =
+                        "Completed";
+                    btn.remove();
+                }
+            });
+        });
+
+        // View details button functionality
+        document
+            .querySelectorAll(".action-btn:not(.call):not(.complete)")
+            .forEach((btn) => {
+                btn.addEventListener("click", () => {
+                    const orderId = btn.getAttribute("data-order");
+                    document.getElementById("orderId").value = orderId;
+
+                    // In a real app, this would fetch order details from an API
+                    if (orderId === "ORD-1003") {
+                        document.getElementById("orderCustomer").value = "Amit Patel";
+                        document.getElementById("orderProducts").value =
+                            "2 Gas Cylinders\n1 Regulator";
+                        document.getElementById("orderAddress").value =
+                            "123 Main St, Mumbai, Maharashtra";
+                        document.getElementById("orderStatus").value = "Completed";
+                    }
+
+                    document.getElementById("orderModal").style.display = "flex";
+                });
+            });
+
+        // Modal functionality
+        document
+            .querySelectorAll(".close-modal, .btn-secondary")
+            .forEach((btn) => {
+                btn.addEventListener("click", () => {
+                    document.querySelectorAll(".modal").forEach((modal) => {
+                        modal.style.display = "none";
+                    });
+                });
+            });
+
+        // Start call button
+        document.getElementById("startCall").addEventListener("click", () => {
+            const phone = document.getElementById("customerPhone").value;
+            alert(`Calling ${phone}...`);
+            document.getElementById("callModal").style.display = "none";
+        });
+
+        // Save order changes
+        document.getElementById("saveOrder").addEventListener("click", () => {
+            alert("Order details updated successfully");
+            document.getElementById("orderModal").style.display = "none";
+        });
+
+        // Mark messages as read when clicked
+        document.querySelectorAll(".message").forEach((message) => {
+            message.addEventListener("click", () => {
+                message.classList.remove("unread");
+            });
+        });
+
+        // New Booking Button Functionality
+        document.getElementById("newBookingBtn").addEventListener("click", () => {
+            // Show the booking modal
+            document.getElementById("bookingModal").style.display = "flex";
+        });
+
+        // Confirm Booking Button - simplified since form fields were removed
+        document
+            .getElementById("confirmBooking")
+            .addEventListener("click", () => {
+                // In a real application, this would send the data to a server
+                alert("Booking functionality would be implemented here");
+
+                // Close the modal
+                document.getElementById("bookingModal").style.display = "none";
+            });
+
+        // Orders Button Functionality
+        document.getElementById("ordersBtn").addEventListener("click", () => {
+            // Show the orders modal
+            document.getElementById("ordersModal").style.display = "flex";
+        });
+
+        // View Orders Button Functionality
+        document.getElementById("viewOrders").addEventListener("click", () => {
+            const filter = document.getElementById("ordersFilter").value;
+            const startDate = document.getElementById("startDate").value;
+            const endDate = document.getElementById("endDate").value;
+            const search = document.getElementById("orderSearch").value;
+
+            // In a real application, this would fetch and display orders
+            alert(
+                `Would fetch orders with filter: ${filter}, date range: ${startDate} to ${endDate}, search: ${search}`
+            );
+
+            // Close the modal
+            document.getElementById("ordersModal").style.display = "none";
+        });
+    </script>
+    <script src="new_submit.js"></script>
+</body>
+
+</html>
